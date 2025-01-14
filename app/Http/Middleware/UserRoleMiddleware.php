@@ -13,8 +13,15 @@ class UserRoleMiddleware
      *
      * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */
-    public function handle(Request $request, Closure $next): Response
+    public function handle(Request $request, Closure $next,$role ): Response
     {
+        if($request->user()->role !== $role){
+            if($request->user()->role === 'company'){
+                return redirect()->route('company.dashboard');
+            }elseif($request->user()->role === 'candidate'){
+                return redirect()->route('candidate.dashboard');
+            }
+        }
         return $next($request);
     }
 }
